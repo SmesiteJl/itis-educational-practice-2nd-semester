@@ -1,0 +1,26 @@
+
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\Service\LlmClient:
+        arguments:
+            $baseUrl: '%env(LLM_BASE_URL)%'
+            $apiKey: '%env(LLM_API_KEY)%'
+            $model: '%env(LLM_MODEL)%'
+
+    App\Service\AsyncLlmClient:
+        arguments:
+            $baseUrl: '%env(LLM_BASE_URL)%'
+            $apiKey: '%env(LLM_API_KEY)%'
+            $model: '%env(LLM_MODEL)%'
