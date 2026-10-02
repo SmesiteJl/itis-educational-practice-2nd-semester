@@ -1,0 +1,36 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    providers:
+        admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: login
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        admin_login:
+            pattern: ^/api/admin/login$
+            security: false
+        admin:
+            pattern: ^/api/admin
+            stateless: true
+            provider: admin_provider
+            access_token:
+                token_handler: App\Security\AdminTokenHandler
+        main:
+            lazy: true
+            provider: admin_provider
+
+    access_control:
+        - { path: ^/api/admin, roles: ROLE_ADMIN }
+
+when@test:
+    security:
+        password_hashers:
+            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+                algorithm: auto
+                cost: 4
+                time_cost: 3
+                memory_cost: 10
